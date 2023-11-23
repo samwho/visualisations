@@ -1,0 +1,21 @@
+{
+  "name": "retrying",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "bunx --bun tsc && bun build ./index.ts --outdir ./out --target browser --minify"
+  },
+  "devDependencies": {
+    "bun-types": "^0.5.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/color": "^3.0.3",
+    "color": "^4.2.3",
+    "gsap": "^3.12.1",
+    "lil-gui": "^0.18.2",
+    "pixi.js-legacy": "^7.2.4"
+  }
+}
