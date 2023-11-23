@@ -1,0 +1,19 @@
+{
+  "name": "hashing",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "bunx --bun tsc && bun build ./index.ts --outdir ./out --target browser --minify"
+  },
+  "devDependencies": {
+    "bun-types": "^0.5.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "gsap": "^3.11.5",
+    "pixi.js-legacy": "^7.2.4",
+    "webfontloader": "^1.6.28"
+  }
+}
