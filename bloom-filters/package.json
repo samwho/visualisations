@@ -1,0 +1,22 @@
+{
+  "name": "bloom-filters",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "bunx --bun tsc && bun build ./index.ts --outdir ./out --target browser --minify"
+  },
+  "devDependencies": {
+    "bun-types": "1.0.21"
+  },
+  "peerDependencies": {
+    "pixi.js-legacy": "^7.3.2",
+    "typescript": "5.3.3"
+  },
+  "dependencies": {
+    "gsap": "3.12.4",
+    "hash.js": "1.1.7",
+    "html-parsed-element": "^0.4.1",
+    "lil-gui": "0.19.1",
+    "pixijs-layout": "0.1.18"
+  }
+}
