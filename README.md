@@ -2,6 +2,7 @@
 
 This repository contains the source code behind my visualisation blog posts.
 
+- `numbers` - <https://samwho.dev/numbers>
 - `bloom-filters/` - <https://samwho.dev/bloom-filters>
 - `retries/` - <https://encore.dev/blog/retries>
 - `hashing/` - <https://samwho.dev/hashing>

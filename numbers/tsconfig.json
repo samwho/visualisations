@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "types": [
+      "bun-types" // add Bun global
+    ],
+  },
+  "files": [
+    "node_modules/gsap/types/index.d.ts"
+  ]
+}
