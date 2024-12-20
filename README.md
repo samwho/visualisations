@@ -9,6 +9,7 @@ This repository contains the source code behind my visualisation blog posts.
 - `memory-allocation/` - <https://samwho.dev/memory-allocation>
 - `load-balancing/` - <https://samwho.dev/load-balancing>
 - `queueing/` - <https://encore.dev/blog/queueing>
+- `turing-machines/` - <https://samwho.dev/turing-machines>
 
 In the case of `load-balancing` and `memory-allocation` the code is vanilla
 JavaScript that I include into pages with a simple `<script>` tag. It may
