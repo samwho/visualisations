@@ -1,0 +1,28 @@
+{
+  "name": "turing",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/bun": "latest",
+    "@types/chroma-js": "^2.4.4",
+    "peggy": "^4.1.1"
+  },
+  "scripts": {
+    "build-dev": "bun build ./index.ts --outdir ./out --target browser --watch",
+    "build-production": "bun build ./index.ts --sourcemap=linked --outdir ./out --target browser  --minify",
+    "build-parser": "peggy -o machine/TlangParser.js --format es --dts machine/tlang.peggy"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@juliendargelos/easings": "^0.0.6",
+    "@tweenjs/tween.js": "^25.0.0",
+    "@types/two.js": "^0.7.9",
+    "chroma-js": "^3.1.2",
+    "html-parsed-element": "^0.4.1",
+    "lil-gui": "^0.20.0",
+    "two.js": "^0.8.14"
+  }
+}
