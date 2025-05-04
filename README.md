@@ -9,6 +9,7 @@ This repository contains the source code behind my visualisation blog posts.
 - `memory-allocation/` - <https://samwho.dev/memory-allocation>
 - `load-balancing/` - <https://samwho.dev/load-balancing>
 - `queueing/` - <https://encore.dev/blog/queueing>
+- `turing-machines/` - <https://samwho.dev/turing-machines>
 - `reservoir-sampling/` - to be published
 
 In the case of `load-balancing` and `memory-allocation` the code is vanilla
