@@ -149,7 +149,7 @@ export class SimpleReservoir<T> extends BaseReservoir<T> {
     if (this.n < this.k) {
       return this.n;
     }
-    const j = floor(random() * this.n);
+    const j = floor(random() * (this.n + 1));
     if (j < this.k) {
       return j;
     }
