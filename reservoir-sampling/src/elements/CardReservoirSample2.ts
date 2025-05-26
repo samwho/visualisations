@@ -238,7 +238,7 @@ export class CardReservoirSample2 extends BaseElement {
       return;
     }
 
-    let i = Math.floor(Math.random() * this.cards.length);
+    let i = Math.floor(Math.random() * (this.cards.length + 1));
     const rand = i;
 
     if (i < 2) {
