@@ -11,6 +11,7 @@ This repository contains the source code behind my visualisation blog posts.
 - `queueing/` - <https://encore.dev/blog/queueing>
 - `turing-machines/` - <https://samwho.dev/turing-machines>
 - `reservoir-sampling/` - <https://samwho.dev/reservoir-sampling>
+- `big-o/` - <https://samwho.dev/big-o>
 
 In the case of `load-balancing` and `memory-allocation` the code is vanilla
 JavaScript that I include into pages with a simple `<script>` tag. It may
