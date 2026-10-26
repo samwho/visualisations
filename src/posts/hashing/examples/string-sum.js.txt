@@ -1,0 +1,8 @@
+// https://samwho.dev/hashing/
+export default function stringSum(key) {
+    let hash = 0;
+    for (let c of key) {
+        hash += c.charCodeAt(0);
+    }
+    return hash % 0xFFFFFFFF;
+}

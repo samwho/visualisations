@@ -1,0 +1,32 @@
+/*! MurmurHash2 by Austin Appleby (public domain): /js/licenses/hashing.txt */
+// https://github.com/aappleby/smhasher/blob/master/src/MurmurHash2.cpp
+export default function murmur2(key, seed = 0) {
+    const m = 0x5bd1e995;
+    let hash = seed ^ key.length;
+    let i = 0;
+
+    while (i + 4 <= key.length) {
+        let k = (key.charCodeAt(i) & 255) |
+            ((key.charCodeAt(i + 1) & 255) << 8) |
+            ((key.charCodeAt(i + 2) & 255) << 16) |
+            ((key.charCodeAt(i + 3) & 255) << 24);
+        k = Math.imul(k, m);
+        k ^= k >>> 24;
+        k = Math.imul(k, m);
+        hash = Math.imul(hash, m) ^ k;
+        i += 4;
+    }
+
+    let tail = 0;
+    for (let j = i; j < key.length; j++) {
+        tail |= (key.charCodeAt(j) & 255) << ((j - i) * 8);
+    }
+    if (i < key.length) {
+        hash = Math.imul(hash ^ tail, m);
+    }
+
+    hash ^= hash >>> 13;
+    hash = Math.imul(hash, m);
+    hash ^= hash >>> 15;
+    return hash >>> 0;
+}

@@ -1,0 +1,21 @@
+{
+	"name": "samwho-visualisations",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "bun build.ts",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"hash.js": "1.1.7",
+		"lit": "3.3.3",
+		"matter-js": "0.20.0",
+		"valibot": "1.5.0"
+	},
+	"devDependencies": {
+		"@types/bun": "1.4.4",
+		"@types/matter-js": "0.20.2",
+		"monaco-editor": "0.57.0",
+		"typescript": "7.0.2"
+	}
+}

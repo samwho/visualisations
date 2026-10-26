@@ -1,0 +1,96 @@
+/*! FarmHash, Copyright (c) 2014 Google, Inc. (MIT): /js/licenses/hashing.txt */
+// https://github.com/google/farmhash/blob/9d99331eb762e9ee22fd97d15a594525ad98310a/src/farmhash.cc#L1024-L1137
+export default function farmhash32(key, seed = 0) {
+    const c1 = 0xcc9e2d51;
+    const c2 = 0x1b873593;
+    const rotate = (value, bits) => (value >>> bits) | (value << (32 - bits));
+    const read32 = (i) => (key.charCodeAt(i) & 255) |
+        ((key.charCodeAt(i + 1) & 255) << 8) |
+        ((key.charCodeAt(i + 2) & 255) << 16) |
+        ((key.charCodeAt(i + 3) & 255) << 24);
+    const mur = (value, hash) => {
+        value = Math.imul(rotate(Math.imul(value, c1), 17), c2);
+        return (Math.imul(rotate(hash ^ value, 19), 5) + 0xe6546b64) | 0;
+    };
+    const finish = (hash) => {
+        hash ^= hash >>> 16;
+        hash = Math.imul(hash, 0x85ebca6b);
+        hash ^= hash >>> 13;
+        hash = Math.imul(hash, 0xc2b2ae35);
+        hash ^= hash >>> 16;
+        return hash >>> 0;
+    };
+    const hash13to24 = (start, length, initial) => {
+        let a = read32(start - 4 + (length >>> 1));
+        const b = read32(start + 4);
+        const c = read32(start + length - 8);
+        const d = read32(start + (length >>> 1));
+        const e = read32(start);
+        const f = read32(start + length - 4);
+        let h = (Math.imul(d, c1) + length + initial) | 0;
+        a = (rotate(a, 12) + f) | 0;
+        h = (mur(c, h) + a) | 0;
+        a = (rotate(a, 3) + c) | 0;
+        h = (mur(e, h) + a) | 0;
+        a = (rotate((a + f) | 0, 12) + d) | 0;
+        return finish((mur(b ^ initial, h) + a) | 0);
+    };
+    const hash32 = (start, length, initial = 0) => {
+        if (length <= 4) {
+            let b = initial;
+            let c = 9;
+            for (let i = 0; i < length; i++) {
+                // The reference uses signed char, including bytes above 127.
+                const byte = (key.charCodeAt(start + i) << 24) >> 24;
+                b = (Math.imul(b, c1) + byte) | 0;
+                c ^= b;
+            }
+            return finish(mur(b, mur(length, c)));
+        }
+        if (length <= 12) {
+            const a = (length + read32(start)) | 0;
+            const b = (length * 5 + read32(start + length - 4)) | 0;
+            const c = (9 + read32(start + ((length >>> 1) & 4))) | 0;
+            const d = (length * 5 + initial) | 0;
+            return finish(initial ^ mur(c, mur(b, mur(a, d))));
+        }
+        if (length <= 24) {
+            return hash13to24(start, length, Math.imul(initial, c1));
+        }
+        let h = length;
+        let g = Math.imul(c1, length);
+        let f = g;
+        const tail = (offset) => Math.imul(rotate(Math.imul(read32(start + length - offset), c1), 17), c2);
+        h = (Math.imul(rotate(h ^ tail(4), 19), 5) + 0xe6546b64) | 0;
+        h = (Math.imul(rotate(h ^ tail(16), 19), 5) + 0xe6546b64) | 0;
+        g = (Math.imul(rotate(g ^ tail(8), 19), 5) + 0xe6546b64) | 0;
+        g = (Math.imul(rotate(g ^ tail(12), 19), 5) + 0xe6546b64) | 0;
+        f = (rotate((f + tail(20)) | 0, 19) + 113) | 0;
+        const blocks = Math.floor((length - 1) / 20);
+        for (let i = 0; i < blocks; i++) {
+            const offset = start + i * 20;
+            const a = read32(offset);
+            const b = read32(offset + 4);
+            const c = read32(offset + 8);
+            const d = read32(offset + 12);
+            const e = read32(offset + 16);
+            h = (mur(d, (h + a) | 0) + e) | 0;
+            g = (mur(c, (g + b) | 0) + a) | 0;
+            f = (mur((b + Math.imul(e, c1)) | 0, (f + c) | 0) + d) | 0;
+            f = (f + g) | 0;
+            g = (g + f) | 0;
+        }
+        g = Math.imul(rotate(g, 11), c1);
+        g = Math.imul(rotate(g, 17), c1);
+        f = Math.imul(rotate(f, 11), c1);
+        f = Math.imul(rotate(f, 17), c1);
+        h = (Math.imul(rotate((h + g) | 0, 19), 5) + 0xe6546b64) | 0;
+        h = Math.imul(rotate(h, 17), c1);
+        h = (Math.imul(rotate((h + f) | 0, 19), 5) + 0xe6546b64) | 0;
+        return Math.imul(rotate(h, 17), c1) >>> 0;
+    };
+    seed |= 0;
+    if (key.length <= 24) return hash32(0, key.length, seed);
+    const h = hash13to24(0, 24, seed ^ key.length);
+    return mur((hash32(24, key.length - 24) + seed) | 0, h) >>> 0;
+}

@@ -1,0 +1,29 @@
+/*! FastHash, Copyright (C) 2012 Zilong Tan (MIT): /js/licenses/hashing.txt */
+// https://github.com/ztanml/fast-hash/blob/ae4eca6490866a8a14225c843ea239e912737821/fasthash.c
+export default function fasthash32(key, seed = 0) {
+    const mask = 0xffffffffffffffffn;
+    const multiplier = 0x880355f21e6d1965n;
+    const mix = (value) => {
+        value ^= value >> 23n;
+        value = (value * 0x2127599bf4325c37n) & mask;
+        return value ^ (value >> 47n);
+    };
+    const read = (offset, length) => {
+        let word = 0n;
+        for (let i = 0; i < length; i++) {
+            word |= BigInt(key.charCodeAt(offset + i) & 255) << BigInt(i * 8);
+        }
+        return word;
+    };
+    let hash = BigInt(seed >>> 0) ^ ((BigInt(key.length) * multiplier) & mask);
+    let offset = 0;
+    while (offset + 8 <= key.length) {
+        hash = ((hash ^ mix(read(offset, 8))) * multiplier) & mask;
+        offset += 8;
+    }
+    if (offset < key.length) {
+        hash = ((hash ^ mix(read(offset, key.length - offset))) * multiplier) & mask;
+    }
+    hash = mix(hash);
+    return Number((hash - (hash >> 32n)) & 0xffffffffn);
+}

@@ -1,0 +1,32 @@
+/*! wyhash32 (Unlicense): /js/licenses/hashing.txt */
+// https://github.com/wangyi-fudan/wyhash/blob/e4764a0b637d34d3421a7760affada9288b625a8/wyhash32.h
+export default function wyhash32(key, seed = 0) {
+    const read32 = (i) => (key.charCodeAt(i) & 255) |
+        ((key.charCodeAt(i + 1) & 255) << 8) |
+        ((key.charCodeAt(i + 2) & 255) << 16) |
+        ((key.charCodeAt(i + 3) & 255) << 24);
+    const mix = (a, b) => {
+        // An exact unsigned 32 x 32 product, split into its two halves.
+        const product = BigInt((a ^ 0x53c5ca59) >>> 0) * BigInt((b ^ 0x74743c1b) >>> 0);
+        return [Number(product & 0xffffffffn), Number(product >> 32n)];
+    };
+    let [a, b] = mix(seed >>> 0, key.length >>> 0);
+    let offset = 0;
+    let remaining = key.length;
+    while (remaining > 8) {
+        [a, b] = mix(a ^ read32(offset), b ^ read32(offset + 4));
+        offset += 8;
+        remaining -= 8;
+    }
+    if (remaining >= 4) {
+        a ^= read32(offset);
+        b ^= read32(offset + remaining - 4);
+    } else if (remaining > 0) {
+        a ^= ((key.charCodeAt(offset) & 255) << 16) |
+            ((key.charCodeAt(offset + (remaining >>> 1)) & 255) << 8) |
+            (key.charCodeAt(offset + remaining - 1) & 255);
+    }
+    [a, b] = mix(a, b);
+    [a, b] = mix(a, b);
+    return (a ^ b) >>> 0;
+}

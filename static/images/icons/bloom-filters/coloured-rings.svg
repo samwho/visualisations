@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="14" viewBox="0 0 42 14" fill="none">
+  <circle cx="7" cy="7" r="5" fill="none" stroke="var(--bloom-sha1-ring)" stroke-width="2"/>
+  <circle cx="21" cy="7" r="5" fill="none" stroke="var(--bloom-sha256-ring)" stroke-width="2"/>
+  <circle cx="35" cy="7" r="5" fill="none" stroke="var(--bloom-sha512-ring)" stroke-width="2"/>
+</svg>

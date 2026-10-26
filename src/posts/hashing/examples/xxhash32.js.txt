@@ -1,0 +1,56 @@
+/*! xxHash, Copyright (C) 2012-2023 Yann Collet (BSD-2-Clause): /js/licenses/hashing.txt */
+// https://github.com/Cyan4973/xxHash/blob/v0.8.3/xxhash.h#L3150
+export default function xxhash32(key, seed = 0) {
+    const p1 = 0x9e3779b1;
+    const p2 = 0x85ebca77;
+    const p3 = 0xc2b2ae3d;
+    const p4 = 0x27d4eb2f;
+    const p5 = 0x165667b1;
+    const rotate = (value, bits) => (value << bits) | (value >>> (32 - bits));
+    const read32 = (i) => (key.charCodeAt(i) & 255) |
+        ((key.charCodeAt(i + 1) & 255) << 8) |
+        ((key.charCodeAt(i + 2) & 255) << 16) |
+        ((key.charCodeAt(i + 3) & 255) << 24);
+    const round = (acc, lane) =>
+        Math.imul(rotate((acc + Math.imul(lane, p2)) | 0, 13), p1);
+
+    seed |= 0;
+    let i = 0;
+    let hash;
+    if (key.length >= 16) {
+        let a = (seed + p1 + p2) | 0;
+        let b = (seed + p2) | 0;
+        let c = seed;
+        let d = (seed - p1) | 0;
+        while (i + 16 <= key.length) {
+            a = round(a, read32(i));
+            b = round(b, read32(i + 4));
+            c = round(c, read32(i + 8));
+            d = round(d, read32(i + 12));
+            i += 16;
+        }
+        hash = (rotate(a, 1) + rotate(b, 7) +
+            rotate(c, 12) + rotate(d, 18)) | 0;
+    } else {
+        hash = (seed + p5) | 0;
+    }
+    hash = (hash + key.length) | 0;
+
+    while (i + 4 <= key.length) {
+        hash = (hash + Math.imul(read32(i), p3)) | 0;
+        hash = Math.imul(rotate(hash, 17), p4);
+        i += 4;
+    }
+    while (i < key.length) {
+        hash = (hash + Math.imul(key.charCodeAt(i) & 255, p5)) | 0;
+        hash = Math.imul(rotate(hash, 11), p1);
+        i++;
+    }
+
+    hash ^= hash >>> 15;
+    hash = Math.imul(hash, p2);
+    hash ^= hash >>> 13;
+    hash = Math.imul(hash, p3);
+    hash ^= hash >>> 16;
+    return hash >>> 0;
+}
